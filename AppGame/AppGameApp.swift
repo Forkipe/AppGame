@@ -9,12 +9,20 @@ import SwiftUI
 
 @main
 struct AppGameApp: App {
-    let persistenceController = PersistenceController.shared
-
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @StateObject private var dataController = DataController()
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            ContentView().environment(\.managedObjectContext, dataController.container.viewContext)
+                
         }
+    }
+}
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+    static var orientationLock = UIInterfaceOrientationMask.all
+    
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return AppDelegate.orientationLock
     }
 }
