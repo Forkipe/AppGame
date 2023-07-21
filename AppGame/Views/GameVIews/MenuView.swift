@@ -104,7 +104,7 @@ struct MenuView: View {
     }
 }
 
-struct GameView_Previews: PreviewProvider {
+struct MenuView_Previews: PreviewProvider {
     static var previews: some View {
         MenuView()
     }

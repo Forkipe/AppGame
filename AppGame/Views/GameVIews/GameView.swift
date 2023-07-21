@@ -9,13 +9,14 @@ import Foundation
 import SwiftUI
 
 struct GameView : View {
+    
     @State private var HeliPosition = CGPoint(x: 100, y: 100)
     @State private var score: Double  = 0
     @State private var ObstPosition = CGPoint(x: 1000, y: 300)
     @State private var isPaused:Bool  = false
     @State private var speed:Int = 0
     @Environment(\.managedObjectContext) var managedObjContext
-    
+    @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     
     @State var timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
     var body: some View {
@@ -55,7 +56,7 @@ struct GameView : View {
                 
                 Button( action: {
                     withAnimation {
-                        self.HeliPosition.y -= 120
+                        self.HeliPosition.y -= 100
                     }
                 }, label: {
                     ZStack {
@@ -81,7 +82,36 @@ struct GameView : View {
             }
             .background(Image("nightsky"))
             .frame(width: geo.size.width, height: geo.size.height)
-        }.onAppear{
+        }
+        .navigationBarBackButtonHidden(true)
+            .toolbar(content: {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }, label: {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 20)
+                                .stroke(lineWidth: 3)
+                                .foregroundColor(Color.purple.opacity(0.5))
+                                .frame(width: 100, height: 30)
+                            RoundedRectangle(cornerRadius: 20)
+                                .foregroundColor(.white)
+                                .frame(width: 100, height: 30)
+                            HStack {
+                                Text("Back")
+                                    .fontWeight(.light)
+                                    .foregroundColor(.black)
+                                    .frame(width: 50.0, height: 30.0)
+                                Image(systemName: "house")
+                                    .resizable()
+                                    .foregroundColor(.black)
+                                    .frame(width: 25.0, height: 25.0)
+                            }
+                        }
+                    })
+                }
+            })
+        .onAppear{
             UIDevice.current.setValue(UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation")
             AppDelegate.orientationLock = .landscapeLeft
         }.onDisappear{
@@ -154,3 +184,8 @@ struct GameView : View {
     
 }
 
+struct GameView_Previews: PreviewProvider {
+    static var previews: some View {
+        GameView().previewInterfaceOrientation(.landscapeLeft)
+    }
+}

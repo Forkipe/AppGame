@@ -14,7 +14,6 @@ struct ContentView: View {
     
     @State private var showLoading: Bool = false
     @State private var loadedLink: String? = nil
-//    @State private var linkAccess: Bool = false
     @State private var showMenu: Bool = false
     var body: some View {
         content
@@ -22,7 +21,7 @@ struct ContentView: View {
     
     var content: some View {
         ZStack {
-           Text("")
+           Text("loading...")
                 .onAppear {
                     getLink { result in
                         switch result {

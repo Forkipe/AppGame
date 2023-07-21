@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct AboutView: View {
+    @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     var body: some View {
-        ZStack{
+        ZStack {
             Image("moon_waterfall")
                 .resizable()
                 .edgesIgnoringSafeArea(.all)
@@ -49,7 +50,34 @@ struct AboutView: View {
                     AppDelegate.orientationLock = .all
                 }
             }
-        }
+        }.navigationBarBackButtonHidden(true)
+            .toolbar(content: {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }, label: {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 20)
+                                .stroke(lineWidth: 3)
+                                .foregroundColor(Color.purple.opacity(0.5))
+                                .frame(width: 100, height: 30)
+                            RoundedRectangle(cornerRadius: 20)
+                                .foregroundColor(.white)
+                                .frame(width: 100, height: 30)
+                            HStack {
+                                Text("Back")
+                                    .fontWeight(.light)
+                                    .foregroundColor(.black)
+                                    .frame(width: 50.0, height: 30.0)
+                                Image(systemName: "house")
+                                    .resizable()
+                                    .foregroundColor(.black)
+                                    .frame(width: 25.0, height: 25.0)
+                            }
+                        }
+                    })
+                }
+            })
     }
 }
 
